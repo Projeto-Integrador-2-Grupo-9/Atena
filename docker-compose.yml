@@ -1,0 +1,28 @@
+version: '3.1'
+services:
+
+  api:
+    container_name: AD_ATE
+    build: .
+    entrypoint: '/start-reload.sh'
+    ports: ['82:80']
+    volumes: ['.:/app']
+
+  mongo:
+    container_name: AD_ATE_mongo
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    container_name: AD_ATE_mongo-express
+    image: mongo-express
+    restart: always
+    ports:
+      - 8083:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
